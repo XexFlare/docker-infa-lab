@@ -1,4 +1,4 @@
-## 🧱 Infrastructure Overview
+# 🧱 Infrastructure Overview
 
 This project represents a multi-node, multi-layer Docker infrastructure designed to run AI systems, web platforms, and enterprise applications in isolated but coordinated environments.
 
@@ -6,9 +6,9 @@ This project represents a multi-node, multi-layer Docker infrastructure designed
 
 ---
 
-### 🖥️ Nodes & Container Layers
+## 🖥️ Nodes & Container Layers
 
-### VPS PALADIN (Primary Platform Node)
+## VPS PALADIN (Primary Platform Node)
 
 This node hosts multiple **Docker-in-Docker (DinD) environments**, each acting as an isolated execution layer with a specific responsibility.
 
@@ -60,6 +60,46 @@ Dedicated to machine learning and AI workloads.
 
 ---
 
+### portainer
+### 🧭 Centralized Management (Portainer)
+
+A single Portainer instance is used to manage all Docker environments across VPS PALADIN and VPS ANGEL.
+
+**Implementation**
+
+Each Docker-in-Docker (DinD) layer exposes its own Docker daemon, registered in Portainer as a separate environment via:
+
+- Docker socket / remote API
+- Portainer Agent (for remote nodes)
+
+Example environments:
+- PALADIN-fire (web layer)
+- PALADIN-ice (ML layer)
+- PALADIN-lightning (systems layer)
+- ANGEL-inference (AI node)
+
+**Operational Model**
+
+Portainer provides a unified interface to:
+
+- Deploy Docker Compose stacks per environment
+- Manage containers (lifecycle, logs, updates)
+- Operate across nodes without direct SSH access
+
+Deployments are scoped by environment:
+- Web → fire
+- ML → ice
+- Systems → lightning
+- Inference → ANGEL
+
+**Architecture Role**
+
+Portainer acts as a centralized control layer over multiple isolated Docker daemons.
+
+Each DinD layer is network-isolated, with cross-layer communication handled via controlled HTTP interfaces (portals/APIs).
+
+
+
 ### ⚡ servercluster_lightning (Systems Layer)
 
 Enterprise and operational systems.
@@ -74,7 +114,7 @@ Enterprise and operational systems.
 
 ---
 
-### VPS ANGEL (AI Inference Node)
+## VPS ANGEL (AI Inference Node)
 
 Dedicated to **AI inference and modular AI service architecture**, separate from platform and training environments.
 
