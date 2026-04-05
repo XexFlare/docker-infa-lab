@@ -14,7 +14,7 @@ This node hosts multiple **Docker-in-Docker (DinD) environments**, each acting a
 
 ---
 
-### 🔥 servercluster_fire (Web Layer)
+### 🔥 servercluster_fire DinD (Web Layer)
 
 Primary entry point for user-facing services.
 
@@ -44,7 +44,7 @@ Due to Docker-in-Docker isolation:
 
 ---
 
-### ❄️ servercluster_ice (AI / ML Layer)
+### ❄️ servercluster_ice DinD (AI / ML Layer)
 
 Dedicated to machine learning and AI workloads.
 
@@ -60,7 +60,7 @@ Dedicated to machine learning and AI workloads.
 
 ---
 
-### ⚡ servercluster_lightning (Systems Layer)
+### ⚡ servercluster_lightning DinD (Systems Layer)
 
 Enterprise and operational systems.
 
@@ -148,6 +148,10 @@ Jessica AI ecosystem:
 - api.jessica.ai
 - chat.jessica.ai
 - server.jessica.ai
+
+Due to Docker-in-Docker isolation, Traefik cannot directly route to containers in other layers (other DinDs) or VPS nodes. 
+To handle this, **web portal containers act as HTTP bridge endpoints**, receiving routed traffic and forwarding requests to target services (ML layer, systems layer, or VPS ANGEL) via internal or external APIs.
+This enforces controlled cross-layer access while maintaining full network isolation between DinD environments.
 
 ---
 
