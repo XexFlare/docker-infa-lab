@@ -75,7 +75,7 @@ Enterprise and operational systems.
 ---
 
 ### portainer
-### 🧭 Centralized Management (Portainer)
+**🧭 Centralized Management (Portainer)**
 
 A single Portainer instance is used to manage all Docker environments across VPS PALADIN and VPS ANGEL.
 
