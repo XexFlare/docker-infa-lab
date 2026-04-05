@@ -4,6 +4,38 @@ This project represents a multi-node, multi-layer Docker infrastructure designed
 
 > This architecture is based on a real deployed system, with sensitive values and configurations replaced for security.
 
+**Infrastructure Overview Diagram**
+```
+VPS PALADIN
+└── ALPHA
+    └── Portainer
+        ├── servercluster_fire_ai_stack (Web Layer)
+        │   └── traefik
+        │       ├── agent_image_x
+        │       ├── agent_vision_x
+        │       ├── phoenix_ai_app
+        │       ├── phoenix_ai_command
+        │       ├── phoenix_ai_orchestrator
+        │       ├── webportal_claw
+        │       └── webportal_odoo
+        │
+        ├── servercluster_ice_ai_stack (AI / ML Layer)
+        │   ├── mlflow
+        │   ├── mlflow-fert-forecast
+        │   └── openclaw_x
+        │
+        └── servercluster_lightning_ai_stack (Systems Layer)
+            └── odoo_ferterp
+
+VPS ANGEL
+└── Jessica (Inference Layer)
+    ├── jessica-ai
+    ├── jessica-ai-architecture
+    ├── jessica-ai-api
+    ├── jessica-ai-chat
+    └── jessica-ai-server
+```
+
 ---
 
 ## 🖥️ Nodes & Container Layers
