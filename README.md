@@ -60,6 +60,20 @@ Dedicated to machine learning and AI workloads.
 
 ---
 
+### ⚡ servercluster_lightning (Systems Layer)
+
+Enterprise and operational systems.
+
+**Responsibilities:**
+- Business systems
+- ERP workflows
+- Operational data handling
+
+**Services:**
+- odoo_ferterp (ERP platform)
+
+---
+
 ### portainer
 ### 🧭 Centralized Management (Portainer)
 
@@ -98,21 +112,8 @@ Portainer acts as a centralized control layer over multiple isolated Docker daem
 
 Each DinD layer is network-isolated, with cross-layer communication handled via controlled HTTP interfaces (portals/APIs).
 
-
-
-### ⚡ servercluster_lightning (Systems Layer)
-
-Enterprise and operational systems.
-
-**Responsibilities:**
-- Business systems
-- ERP workflows
-- Operational data handling
-
-**Services:**
-- odoo_ferterp (ERP platform)
-
 ---
+
 
 ## VPS ANGEL (AI Inference Node)
 
