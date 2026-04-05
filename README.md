@@ -8,7 +8,7 @@ This project represents a multi-node, multi-layer Docker infrastructure designed
 
 ### 🖥️ Nodes & Container Layers
 
-#### VPS PALADIN (Primary Platform Node)
+### VPS PALADIN (Primary Platform Node)
 
 This node hosts multiple **Docker-in-Docker (DinD) environments**, each acting as an isolated execution layer with a specific responsibility.
 
@@ -74,7 +74,7 @@ Enterprise and operational systems.
 
 ---
 
-#### VPS ANGEL (AI Inference Node)
+### VPS ANGEL (AI Inference Node)
 
 Dedicated to **AI inference and modular AI service architecture**, separate from platform and training environments.
 
