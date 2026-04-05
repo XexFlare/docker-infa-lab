@@ -1,2 +1,124 @@
-# docker-infa-lab
-Docker
+## 🧱 Infrastructure Overview
+
+This project represents a multi-node, multi-layer Docker infrastructure designed to run AI systems, web platforms, and enterprise applications in isolated but coordinated environments.
+
+> This architecture is based on a real deployed system, with sensitive values and configurations replaced for security.
+
+---
+
+### 🖥️ Nodes & Container Layers
+
+#### VPS PALADIN (Primary Platform Node)
+
+This node hosts multiple **Docker-in-Docker (DinD) environments**, each acting as an isolated execution layer with a specific responsibility.
+
+---
+
+### 🔥 servercluster_fire (Web Layer)
+
+Primary entry point for user-facing services.
+
+**Responsibilities:**
+- External routing
+- User-facing applications
+- Web portals
+
+**Services:**
+- traefik (reverse proxy within DinD)
+- agent_image_x
+- agent_vision_x
+- phoenix_ai_app
+- phoenix_ai_command
+- phoenix_ai_orchestrator
+- webportal_claw
+- webportal_odoo
+
+**Architecture Note:**
+
+Traefik operates *inside* this DinD layer.
+
+Due to Docker-in-Docker isolation:
+- Direct routing to services outside this layer is restricted
+- **Web portal containers act as controlled access bridges**
+- These expose services across container boundaries via HTTP interfaces
+
+---
+
+### ❄️ servercluster_ice (AI / ML Layer)
+
+Dedicated to machine learning and AI workloads.
+
+**Responsibilities:**
+- Model training & tracking
+- AI service execution
+- Experimentation environments
+
+**Services:**
+- mlflow (experiment tracking)
+- mlflow-fert-forecast (ML pipeline)
+- openclaw_x (AI system runtime)
+
+---
+
+### ⚡ servercluster_lightning (Systems Layer)
+
+Enterprise and operational systems.
+
+**Responsibilities:**
+- Business systems
+- ERP workflows
+- Operational data handling
+
+**Services:**
+- odoo_ferterp (ERP platform)
+
+---
+
+#### VPS ANGEL (AI Inference Node)
+
+Dedicated to **AI inference and modular AI service architecture**, separate from platform and training environments.
+
+**Responsibilities:**
+- Model inference
+- AI orchestration
+- Scalable AI services
+
+**Services (Jessica AI ecosystem):**
+- jessica-ai (core inference engine)
+- jessica-ai-architecture (system design layer)
+- jessica-ai-api (API interface)
+- jessica-ai-chat (user interaction layer)
+- jessica-ai-server (backend orchestration)
+
+---
+
+### 🌐 Domain Routing
+
+Traffic is routed via Traefik (within the Web Layer DinD) using domain-based routing.
+
+Domains are mapped to services and subservices:
+
+- phoenix.ai → AI platform entry point
+- fertep.com → ERP / business systems
+- xclaw.com → AI tooling
+
+Jessica AI ecosystem:
+- architecture.jessica.ai
+- api.jessica.ai
+- chat.jessica.ai
+- server.jessica.ai
+
+---
+
+### ⚙️ Key Characteristics
+
+- Multi-node architecture (separate VPS roles)
+- Multi-layer Docker-in-Docker segmentation
+- Clear separation of:
+  - Web layer (routing & UI)
+  - AI/ML layer (training & experimentation)
+  - Systems layer (ERP & operations)
+  - Inference layer (dedicated AI execution node)
+- Reverse proxy routing via Traefik
+- Stack-based deployment via Portainer
+- Cross-layer communication via controlled access points (web portals)
