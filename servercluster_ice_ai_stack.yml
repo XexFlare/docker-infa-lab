@@ -1,0 +1,36 @@
+version: "3.9"
+
+# Docker-in-Docker (DinD) service for AI/ML execution layer
+# Part of a multi-layer containerized platform architecture
+
+services:
+  dind-ice-layer:
+    image: docker:25.0-dind
+    container_name: servercluster_ice_ai_layer
+    privileged: true
+    restart: unless-stopped
+
+    # Internal Docker API exposure (for orchestration within the platform)
+    ports:
+      - "2375:2375"
+
+    environment:
+      DOCKER_TLS_CERTDIR: ""
+
+    command:
+      - dockerd
+      - "--host=unix:///var/run/docker.sock"
+      - "--host=tcp://0.0.0.0:2375"
+
+    volumes:
+      - dind_ice_layer_data:/var/lib/docker
+
+    networks:
+      - ai_platform_network
+
+networks:
+  ai_platform_network:
+    external: true
+
+volumes:
+  dind_ice_layer_data:

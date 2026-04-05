@@ -1,0 +1,117 @@
+version: "3.9"
+
+# Web Layer (Fire Stack)
+# User-facing services + routing via Traefik
+# Part of a multi-layer containerized platform architecture
+
+services:
+  ##################################################
+  # Phoenix AI – UI (Frontend Layer)
+  ##################################################
+  phoenix_ui_service:
+    image: nginx:alpine
+    container_name: phoenix_ui_service
+    restart: unless-stopped
+
+    volumes:
+      - vol_phoenix_ui:/usr/share/nginx/html:ro
+
+    networks:
+      - ai_platform_network
+
+    labels:
+      - "traefik.enable=true"
+
+      # HTTPS router
+      - "traefik.http.routers.phoenix-ui.rule=Host(`app.phoenix.ai`)"
+      - "traefik.http.routers.phoenix-ui.entrypoints=websecure"
+      - "traefik.http.routers.phoenix-ui.tls=true"
+      - "traefik.http.routers.phoenix-ui.tls.certresolver=le"
+
+      # Service
+      - "traefik.http.services.phoenix-ui.loadbalancer.server.port=80"
+
+
+  ##################################################
+  # Phoenix AI – Command Gateway (Public API Layer)
+  ##################################################
+  phoenix_command_service:
+    image: node:20-alpine
+    container_name: phoenix_command_service
+    restart: unless-stopped
+
+    working_dir: /app
+
+    volumes:
+      - vol_phoenix_command:/app
+
+    environment:
+      - COMMAND_ADMIN_USERNAME=YOUR_USERNAME
+      - COMMAND_ADMIN_PASSWORD=YOUR_SECURE_PASSWORD
+      - COMMAND_SESSION_SECRET=YOUR_SESSION_SECRET
+      - INTERNAL_ORCH_KEY=INTERNAL_SERVICE_KEY
+
+    command: ["node", "server.js"]
+
+    networks:
+      - ai_platform_network
+
+    labels:
+      - "traefik.enable=true"
+
+      # HTTPS router
+      - "traefik.http.routers.phoenix-command.rule=Host(`api.phoenix.ai`)"
+      - "traefik.http.routers.phoenix-command.entrypoints=websecure"
+      - "traefik.http.routers.phoenix-command.tls=true"
+      - "traefik.http.routers.phoenix-command.tls.certresolver=le"
+
+      # Service
+      - "traefik.http.services.phoenix-command.loadbalancer.server.port=3001"
+
+
+  ##################################################
+  # Phoenix AI – Orchestrator (Internal Execution Layer)
+  ##################################################
+  phoenix_orchestrator_service:
+    image: node:20-alpine
+    container_name: phoenix_orchestrator_service
+    restart: unless-stopped
+
+    working_dir: /app
+
+    volumes:
+      - vol_phoenix_orchestrator:/app
+
+    environment:
+      - COMMAND_BASE_URL=http://phoenix_command_service:3001
+      - INTERNAL_ORCH_KEY=INTERNAL_SERVICE_KEY
+      - DEFAULT_MODEL=MODEL_NAME
+
+    command: ["node", "server/index.js"]
+
+    networks:
+      - ai_platform_network
+
+    # Internal-only service
+    # No Traefik exposure
+    # No external ports
+
+
+##################################################
+# Volumes
+##################################################
+volumes:
+  vol_phoenix_ui:
+    external: true
+  vol_phoenix_command:
+    external: true
+  vol_phoenix_orchestrator:
+    external: true
+
+
+##################################################
+# Network
+##################################################
+networks:
+  ai_platform_network:
+    external: true
